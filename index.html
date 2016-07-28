@@ -1,9 +1,81 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1"><title>Simple Push Demo</title><link rel=manifest href=./manifest.json><link rel=stylesheet href="https://fonts.googleapis.com/icon?family=Material+Icons"><link rel=stylesheet href=https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css><script src=https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js></script><link rel=stylesheet href=./styles/main.css></head><body><div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"><header class=mdl-layout__header><div class=mdl-layout__header-row><span class=mdl-layout-title>Push Demo</span><div class=mdl-layout-spacer></div><nav class="mdl-navigation mdl-layout--large-screen-only"><a class=mdl-navigation__link href=https://github.com/gauntface/simple-push-demo>Github</a> <a class=mdl-navigation__link href="https://developers.google.com/web/fundamentals/primers/push-notifications/">Docs</a> <a class=mdl-navigation__link href="https://developers.google.com/web/fundamentals/getting-started/push-notifications/">Guide</a></nav></div></header><main><div class="push-switch-container js-push-switch-container"><label class="mdl-switch mdl-js-switch mdl-js-ripple-effect js-push-toggle-switch" for=switch-2><input type=checkbox id=switch-2 class=mdl-switch__input disabled> <span class=mdl-switch__label>Enable Push Notifications</span></label></div><div class=content-overlap-wrapper><div class="send-push-options js-send-push-options"><div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label payload-textfield js-payload-textfield-container hidden"><input class="mdl-textfield__input js-payload-textfield" type=text id=payload-textfield> <label class=mdl-textfield__label for=payload-textfield>Add Payload Text</label></div><p class="state-msg js-state-msg"></p><p class="center js-xhr-button-container"><button class="xhr-button js-send-push-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Send a Push via XHR</button></p><div class=js-curl-container><hr><h4>CURL Command</h4><p class=js-curl-copy-msg>Copy and paste the following CURL command into your terminal to send a push message to your browser.</p><p class=js-curl-error-msg></p><p class=snippet-code><code class="curl-code-example js-curl-code language-markup"></code></p></div><div class=js-api-request><hr><h4>Push from a Server</h4><p>To send a push message to this page, you need to make a network request from your server with the following pieces of info (this is essentially a breakdown of the CURL command above):</p><h5>Endpoint URL</h5><pre><code class=js-endpoint></code></pre><h5>Headers</h5><div class=js-headers-list></div><h5>Request Body</h5><p class=small-margin><strong>Type</strong>: <span class=js-body-format></span></p><p class=small-margin><strong>Content</strong>: <span class=js-body-content></span></p><hr></div><p><strong>Notes:</strong></p><ul><li>For more info on the encryption of payloads: <a href="https://developers.google.com/web/updates/2016/03/web-push-encryption?hl=en">Check out this link for info</a>.</li><li>Not seeing a notification in Firefox? <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1233086">This bug may be the culprit.</a> Check the logs for a note when the push is received though.</li><li>Opera supports push on Android, but not on desktop and there is no feature detect for this :(. Bug has been filed on their private issue tracker.</li></ul></div><div class="error-message-container js-error-message-container"><h1 class="error-title js-error-title"></h1><p class="error-message js-error-message"></p></div></div></main></div><script src=./scripts/encryption/helpers.js></script><script src=./scripts/encryption/hmac.js></script><script src=./scripts/encryption/hkdf.js></script><script src=./scripts/encryption/encryption-factory.js></script><script src=./scripts/libs/snippets.js></script><script src=./scripts/push-client.js></script><script src=./scripts/app-controller.js></script><script src=./scripts/main.js></script><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Simple-push-demo by trung828</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Simple-push-demo</h1>
+      <h2 class="project-tagline">A simple example of use push notifications on the web using Service Workers</h2>
+      <a href="https://github.com/trung828/simple-push-demo" class="btn">View on GitHub</a>
+      <a href="https://github.com/trung828/simple-push-demo/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/trung828/simple-push-demo/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-  ga('create', 'UA-77119321-2', 'auto');
-  ga('send', 'pageview');
-  </script></body></html>
+    <section class="main-content">
+      <h1>
+<a id="simple-service-worker-push-demo" class="anchor" href="#simple-service-worker-push-demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Simple Service Worker Push Demo</h1>
+
+<p><a href="https://travis-ci.org/gauntface/simple-push-demo"><img src="https://travis-ci.org/gauntface/simple-push-demo.svg?branch=master" alt="Build Status"></a> <a href="https://david-dm.org/gauntface/simple-push-demo"><img src="https://david-dm.org/gauntface/simple-push-demo.svg" alt="Dependency Status"></a> <a href="https://david-dm.org/gauntface/simple-push-demo#info=devDependencies"><img src="https://david-dm.org/gauntface/simple-push-demo/dev-status.svg" alt="devDependency Status"></a></p>
+
+<p>The goal of this repo is to demonstrate how to implement push
+notifications into your web app.</p>
+
+<h2>
+<a id="relevant-docs--blogs" class="anchor" href="#relevant-docs--blogs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Relevant Docs / Blogs</h2>
+
+<ul>
+<li><a href="https://developers.google.com/web/updates/2016/03/web-push-encryption">Encrypting Payload Data</a></li>
+<li><a href="https://github.com/web-push-libs/">Server Side Libraries to Help Send Push Message</a></li>
+</ul>
+
+<h2>
+<a id="github-pages-demo" class="anchor" href="#github-pages-demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Github Pages Demo</h2>
+
+<p>Just visit <a href="https://gauntface.github.io/simple-push-demo/">Github Pages Demo</a>.</p>
+
+<h2>
+<a id="using-the-demo-locally" class="anchor" href="#using-the-demo-locally" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using the Demo Locally</h2>
+
+<p>To try out the demo locally, clone the repo and run the following:</p>
+
+<ol>
+<li>
+<p>Install the required NPM modules for building the project</p>
+
+<pre><code>npm install
+</code></pre>
+</li>
+<li>
+<p>Install gulp globally</p>
+
+<pre><code>npm install gulp -g
+</code></pre>
+</li>
+<li>
+<p>Run the gulp server</p>
+
+<pre><code>gulp dev
+</code></pre>
+</li>
+</ol>
+
+<p><img src="http://i.imgur.com/Y2yafBv.png" width="304px" height="366xpx"></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/trung828/simple-push-demo">Simple-push-demo</a> is maintained by <a href="https://github.com/trung828">trung828</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
